@@ -23,7 +23,6 @@ CREATE TABLE BoardC
 	isDeleted int DEFAULT 0,
 	viewCount int DEFAULT 0,
 	likeCount int DEFAULT 0,
-	uname varchar(16),
 	PRIMARY KEY (cid)
 );
 
@@ -34,7 +33,7 @@ CREATE TABLE BoardF
 	uid varchar(12) NOT NULL,
 	title varchar(40) NOT NULL,
 	foodCategory varchar(12),
-	opening int,
+	opening varchar(16),
 	location varchar(20),
 	tel varchar(15),
 	info varchar(50),

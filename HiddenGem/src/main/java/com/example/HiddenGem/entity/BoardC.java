@@ -18,7 +18,6 @@ public class BoardC {
 
 	public BoardC(int cid, String uid, String title, String content, LocalDateTime modTime, int isDeleted,
 			int viewCount, int likeCount, String uname) {
-		super();
 		this.cid = cid;
 		this.uid = uid;
 		this.title = title;
@@ -28,6 +27,12 @@ public class BoardC {
 		this.viewCount = viewCount;
 		this.likeCount = likeCount;
 		this.uname = uname;
+	}
+
+	public BoardC(String uid, String title, String content) {
+		this.uid = uid;
+		this.title = title;
+		this.content = content;
 	}
 
 	@Override
