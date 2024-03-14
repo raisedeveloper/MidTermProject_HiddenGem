@@ -1,13 +1,11 @@
 package com.example.HiddenGem.controller;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +17,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.example.HiddenGem.entity.User;
 import com.example.HiddenGem.service.UserService;
-import com.example.HiddenGem.util.AsideUtil;
 import com.example.HiddenGem.util.ImageUtil;
 
 import jakarta.servlet.http.HttpSession;
@@ -32,10 +29,6 @@ public class UserController {
 	private UserService uSvc;
 	@Autowired
 	private ImageUtil imageUtil;
-	@Autowired
-	private AsideUtil asideutil;
-	@Autowired
-	private ResourceLoader resourceLoader;
 	@Value("${spring.servlet.multipart.location}")
 	private String uploadDir;
 
@@ -59,6 +52,7 @@ public class UserController {
 			if (filePart.getContentType().contains("image")) {
 				fileName = filePart.getOriginalFilename();
 				String path = uploadDir + "profile/" + fileName;
+				System.out.println(fileName);
 				try {
 					filePart.transferTo(new File(path));
 				} catch (Exception e) {
@@ -95,18 +89,6 @@ public class UserController {
 			session.setAttribute("email", user.getEmail());
 			session.setAttribute("access", user.getAccess());
 			
-			
-			// 상태 메시지
-			Resource resource = resourceLoader.getResource("classpath:/static/data/todayQuote.txt");
-			String quoteFile = null;
-			try {
-				quoteFile = resource.getURI().getPath();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			String stateMsg = asideutil.getTodayQuote(quoteFile);
-			session.setAttribute("stateMsg", stateMsg);
-
 			// 환영 메시지
 			log.info("Info Login: {}, {}", uid, user.getUname());
 			model.addAttribute("msg", user.getUname() + "님 환영합니다.");
