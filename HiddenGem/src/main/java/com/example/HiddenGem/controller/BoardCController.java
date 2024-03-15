@@ -27,8 +27,8 @@ public class BoardCController {
 //	@Autowired private LikeService likeService;
 	@Value("${spring.servlet.multipart.location}") private String uploadDir;
 
-	@GetMapping("/list")
-	public String list(@RequestParam(name="p", defaultValue="1") int page,
+	@GetMapping("/listC")
+	public String listC(@RequestParam(name="p", defaultValue="1") int page,
 				@RequestParam(name="f", defaultValue="title") String field,
 				@RequestParam(name="q", defaultValue="") String query,
 				HttpSession session, Model model) {
@@ -51,15 +51,15 @@ public class BoardCController {
 		model.addAttribute("endPage", endPage);
 		model.addAttribute("pageList", pageList);
 		
-		return "boardC/list";
+		return "boardC/listC";
 	}
 	
-	@GetMapping("/insert")
+	@GetMapping("/insertC")
 	public String insertForm() {
-		return "boardC/insert";
+		return "boardC/insertC";
 	}
 	
-	@PostMapping("/insert")
+	@PostMapping("/insertC")
 	public String insertProc(String title, String content, 
 			MultipartHttpServletRequest req, HttpSession session) {
 		String sessUid = (String) session.getAttribute("sessUid");
@@ -67,22 +67,22 @@ public class BoardCController {
 		
 		BoardC boardC = new BoardC(sessUid, title, content);
 		boardCService.insertBoardC(boardC);
-		return "redirect:/board/list";
+		return "redirect:/boardC/listC";
 	}
 
-	@GetMapping("/detail/{bid}/{uid}")
-	public String detail(@PathVariable int bid, @PathVariable String uid, String option,
+	@GetMapping("/detailC/{cid}/{uid}")
+	public String detailC(@PathVariable int cid, @PathVariable String uid, String option,
 			HttpSession session, Model model) {
 		// 본인이 조회한 경우 또는 댓글 작성후에는 조회수 증가시키지 않음
 		String sessUid = (String) session.getAttribute("sessUid");
 		if (!uid.equals(sessUid) && (option==null || option.equals("")))
-			boardCService.increaseViewCount(bid);
+			boardCService.increaseViewCount(cid);
 		
-		BoardC boardC = boardCService.getBoardC(bid);
+		BoardC boardC = boardCService.getBoardC(cid);
 		model.addAttribute("boardC", boardC);
 		
 //		// 좋아요 처리
-//		Like like = likeService.getLike(bid, sessUid);
+//		Like like = likeService.getLike(cid, sessUid);
 //		if (like == null)
 //			session.setAttribute("likeClicked", 0);
 //		else
@@ -90,43 +90,43 @@ public class BoardCController {
 //		model.addAttribute("count", board.getLikeCount());
 //		
 		// 댓글 처리
-//		List<Reply> replyList = replyService.getReplyList(bid);
+//		List<Reply> replyList = replyService.getReplyList(cid);
 //		model.addAttribute("replyList", replyList);
-		return "boardC/detail";
+		return "boardC/detailC";
 	}
 	
-	@GetMapping("/delete/{bid}")
-	public String delete(@PathVariable int bid, HttpSession session) {
-		boardCService.deleteBoardC(bid);
-		return "redirect:/boardC/list?p=" + session.getAttribute("currentBoardPage");
+	@GetMapping("/deleteC/{cid}")
+	public String deleteC(@PathVariable int cid, HttpSession session) {
+		boardCService.deleteBoardC(cid);
+		return "redirect:/boardC/listC?p=" + session.getAttribute("currentBoardPage");
 	}
 	
 //	@PostMapping("/reply")
-//	public String reply(int bid, String uid, String comment, HttpSession session) {
+//	public String reply(int cid, String uid, String comment, HttpSession session) {
 //		String sessUid = (String) session.getAttribute("sessUid");
 //		int isMine = (sessUid.equals(uid)) ? 1 : 0;
-//		Reply reply = new Reply(comment, sessUid, bid, isMine);
+//		Reply reply = new Reply(comment, sessUid, cid, isMine);
 //		
 //		replyService.insertReply(reply);
-//		boardService.increaseReplyCount(bid);
+//		boardService.increaseReplyCount(cid);
 //		
-//		return "redirect:/boardC/detail/" + bid + "/" + uid + "?option=DNI";
+//		return "redirect:/boardC/detail/" + cid + "/" + uid + "?option=DNI";
 //	}
 //	
 //	// AJAX 처리
-//	@GetMapping("/like/{bid}")
-//	public String like(@PathVariable int bid, HttpSession session, Model model) {
+//	@GetMapping("/like/{cid}")
+//	public String like(@PathVariable int cid, HttpSession session, Model model) {
 //		String sessUid = (String) session.getAttribute("sessUid");
-//		Like like = likeService.getLike(bid, sessUid);
+//		Like like = likeService.getLike(cid, sessUid);
 //		if (like == null) {
-//			likeService.insertLike(new Like(sessUid, bid, 1));
+//			likeService.insertLike(new Like(sessUid, cid, 1));
 //			session.setAttribute("likeClicked", 1);
 //		} else {
 //			int value = likeService.toggleLike(like);
 //			session.setAttribute("likeClicked", value);
 //		}
-//		int count = likeService.getLikeCount(bid);
-//		boardService.updateLikeCount(bid, count);
+//		int count = likeService.getLikeCount(cid);
+//		boardService.updateLikeCount(cid, count);
 //		model.addAttribute("count", count);
 //		return "boardC/detail::#likeCount"; // 콜론 두개 : 자바의 람다식 표현 - 값이 바뀌는 것
 //	}

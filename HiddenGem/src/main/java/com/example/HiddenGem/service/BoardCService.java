@@ -9,7 +9,7 @@ public interface BoardCService {
 	public static final int COUNT_PER_PAGE = 2;	// 한 페이지당 글 목록의 갯수
 	public static final int PAGE_PER_SCREEN = 10;	// 한 화면에 표시되는 페이지 갯수
 	
-	BoardC getBoardC(int bid);
+	BoardC getBoardC(int cid);
 	
 	int getBoardCCount(String field, String query);
 	
@@ -19,14 +19,14 @@ public interface BoardCService {
 	
 	void updateBoardC(BoardC BoardC);
 	
-	void deleteBoardC(int bid);
+	void deleteBoardC(int cid);
 	
-	void increaseViewCount(int bid);
+	void increaseViewCount(int cid);
 	
-	void increaseReplyCount(int bid);
+	void increaseReplyCount(int cid);
 	
-	void increaseLikeCount(int bid);
+	void increaseLikeCount(int cid);
 	
-	void updateLikeCount(int bid, int count);
+	void updateLikeCount(int cid, int count);
 	
 }
