@@ -21,7 +21,7 @@
 					<h3><strong>게시글 쓰기</strong></h3>
 					<hr>
 					
-					<form action="/mid/boardC/insert" method="post" enctype="multipart/form-data">
+					<form action="/mid/boardC/insertC" method="post" enctype="multipart/form-data">
 						<table class="table table-borderless">
 							<tr>
 								<td style="width: 15%;"><label class="col-form-label">제목</label></td>
@@ -30,10 +30,6 @@
 							<tr>
 								<td><label class="col-form-label">내용</label></td>
 								<td><textarea class="form-control" rows="10" name="content" id="content"></textarea></td>
-							</tr>
-							<tr>
-								<td><label class="col-form-label">첨부 파일</label></td>
-								<td><input type="file" name="files" class="form-control" multiple></td>
 							</tr>
 							<tr>
 								<td colspan="2">

@@ -29,7 +29,7 @@
 						<tr>
 							<td style="width: 52%; text-align: left">
 								<h3><strong class="me-5">게시글 목록</strong>
-									<span style="font-size:16px"><a href="/mid/boardC/insert">
+									<span style="font-size:16px"><a href="/mid/boardC/insertC">
 										<i class="fa-solid fa-pen-to-square"></i> 글 쓰기</a></span>
 								</h3>
 							</td>
@@ -66,7 +66,7 @@
 						<tr th:each="boardC: ${boardList}">
 							<td>[[${boardC.cid}]]</td>
 							<td>
-								<a th:href="@{/boardC/detail/{x}/{y}(x=${boardC.cid},y=${boardC.uid})}">[[${boardC.title}]]</a>
+								<a th:href="@{/boardC/detailC/{x}/{y}(x=${boardC.cid},y=${boardC.uid})}">[[${boardC.title}]]</a>
 							</td>
 							<td>[[${boardC.uname}]]</td>
 							<td>[[${#temporals.format(boardC.modTime, 'yy-MM-dd HH:mm')}]]</td>
@@ -78,21 +78,14 @@
 					<!-- pagination -->
 					<ul class="pagination justify-content-center mt-4">
 						<span th:if="${session.currentBoardPage gt 10}">
-							<li class="page-item"><a class="page-link" th:href="@{/boardC/list(p=${startPage-1},f=${field},q=${query})}">
+							<li class="page-item"><a class="page-link" th:href="@{/boardC/listC(p=${startPage-1},f=${field},q=${query})}">
 							<i class="fa-solid fa-less-than"></i></a></li>
 						</span>
 						<span th:if="${session.currentBoardPage le 10}">
 							<li class="page-item"><a class="page-link" href="#"><i class="fa-solid fa-less-than"></i></a></li>
 						</span>
 						<span th:each="page: ${pageList}">
-							<!-- <li class="page-item" th:classappend="${session.currentBoardPage eq page ? 'active' : ''}">
-								<span th:if="${session.currentBoardPage eq page}">
-									<a class="page-link" href="#">[[${page}]]</a>
-								</span>
-								<span th:if="${session.currentBoardPage ne page}">
-									<a class="page-link" th:href="@{/boardC/list(p=${page},f=${field},q=${query})}">[[${page}]]</a>
-								</span>
-							</li> -->
+						
 							<span th:switch="${page}">
 								<th:block th:case="${session.currentBoardPage}">
 									<li class="page-item active">
@@ -101,13 +94,13 @@
 								</th:block>
 								<th:block th:case="*">
 									<li class="page-item">
-										<a class="page-link" th:href="@{/boardC/list(p=${page},f=${field},q=${query})}">[[${page}]]</a>
+										<a class="page-link" th:href="@{/boardC/listC(p=${page},f=${field},q=${query})}">[[${page}]]</a>
 									</li>
 								</th:block>
 							</span>
 						</span>
 						<span th:if="${totalPages gt endPage}">
-							<li class="page-item"><a class="page-link" th:href="@{/boardC/list(p=${endPage+1},f=${field},q=${query})}">
+							<li class="page-item"><a class="page-link" th:href="@{/boardC/listC(p=${endPage+1},f=${field},q=${query})}">
 							<i class="fa-solid fa-greater-than"></i></a></li>
 						</span>
 						<span th:if="${totalPages eq endPage}">

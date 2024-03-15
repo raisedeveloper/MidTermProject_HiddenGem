@@ -66,6 +66,12 @@
 			<artifactId>abbs</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<!-- 주소를 바탕으로 위도 경도 따오기-->
+		<dependency>
+			<groupId>com.google.code.geocoder-java</groupId>
+			<artifactId>geocoder-java</artifactId>
+			<version>0.16</version>
+		</dependency>
 	</dependencies>
 
 	<build>

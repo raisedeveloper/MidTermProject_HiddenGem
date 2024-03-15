@@ -1,5 +1,6 @@
  package com.example.HiddenGem.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +13,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.example.HiddenGem.entity.BoardC;
+import com.example.HiddenGem.entity.LikeC;
 import com.example.HiddenGem.service.BoardCService;
+import com.example.HiddenGem.service.LikeCService;
+import com.example.HiddenGem.util.JsonUtil;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -23,8 +28,8 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/boardC")
 public class BoardCController {
 	@Autowired private BoardCService boardCService;
-//	@Autowired private ReplyService replyService;
-//	@Autowired private LikeService likeService;
+	@Autowired private LikeCService likeService;
+	@Autowired private JsonUtil jsonUtil;
 	@Value("${spring.servlet.multipart.location}") private String uploadDir;
 
 	@GetMapping("/listC")
@@ -63,9 +68,26 @@ public class BoardCController {
 	public String insertProc(String title, String content, 
 			MultipartHttpServletRequest req, HttpSession session) {
 		String sessUid = (String) session.getAttribute("sessUid");
+		List<MultipartFile> uploadFileList = req.getFiles("files");
 		
-		
-		BoardC boardC = new BoardC(sessUid, title, content);
+		List<String> fileList = new ArrayList<>();
+		for (MultipartFile part: uploadFileList) {
+			// 첨부 파일이 없는 경우 - application/octet-stream
+			if (part.getContentType().contains("octet-stream"))
+				continue;
+			
+			String filename = part.getOriginalFilename();
+			String uploadPath = uploadDir  + "upload/" + filename ;
+			try {
+				part.transferTo(new File(uploadPath));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			fileList.add(filename);
+		}
+		String files = jsonUtil.list2Json(fileList);
+//		
+		BoardC boardC = new BoardC(sessUid, title, content, files);
 		boardCService.insertBoardC(boardC);
 		return "redirect:/boardC/listC";
 	}
@@ -81,17 +103,15 @@ public class BoardCController {
 		BoardC boardC = boardCService.getBoardC(cid);
 		model.addAttribute("boardC", boardC);
 		
-//		// 좋아요 처리
-//		Like like = likeService.getLike(cid, sessUid);
-//		if (like == null)
-//			session.setAttribute("likeClicked", 0);
-//		else
-//			session.setAttribute("likeClicked", like.getValue());
-//		model.addAttribute("count", board.getLikeCount());
-//		
-		// 댓글 처리
-//		List<Reply> replyList = replyService.getReplyList(cid);
-//		model.addAttribute("replyList", replyList);
+		// 좋아요 처리
+		LikeC like = likeService.getLike(cid, sessUid);
+		if (like == null)
+			session.setAttribute("likeClicked", 0);
+		else
+			session.setAttribute("likeClicked", like.getValue());
+		model.addAttribute("count", boardC.getLikeCount());
+		
+
 		return "boardC/detailC";
 	}
 	
@@ -101,34 +121,23 @@ public class BoardCController {
 		return "redirect:/boardC/listC?p=" + session.getAttribute("currentBoardPage");
 	}
 	
-//	@PostMapping("/reply")
-//	public String reply(int cid, String uid, String comment, HttpSession session) {
-//		String sessUid = (String) session.getAttribute("sessUid");
-//		int isMine = (sessUid.equals(uid)) ? 1 : 0;
-//		Reply reply = new Reply(comment, sessUid, cid, isMine);
-//		
-//		replyService.insertReply(reply);
-//		boardService.increaseReplyCount(cid);
-//		
-//		return "redirect:/boardC/detail/" + cid + "/" + uid + "?option=DNI";
-//	}
-//	
-//	// AJAX 처리
-//	@GetMapping("/like/{cid}")
-//	public String like(@PathVariable int cid, HttpSession session, Model model) {
-//		String sessUid = (String) session.getAttribute("sessUid");
-//		Like like = likeService.getLike(cid, sessUid);
-//		if (like == null) {
-//			likeService.insertLike(new Like(sessUid, cid, 1));
-//			session.setAttribute("likeClicked", 1);
-//		} else {
-//			int value = likeService.toggleLike(like);
-//			session.setAttribute("likeClicked", value);
-//		}
-//		int count = likeService.getLikeCount(cid);
-//		boardService.updateLikeCount(cid, count);
-//		model.addAttribute("count", count);
-//		return "boardC/detail::#likeCount"; // 콜론 두개 : 자바의 람다식 표현 - 값이 바뀌는 것
-//	}
-//
+
+	// AJAX 처리
+	@GetMapping("/like/{cid}")
+	public String like(@PathVariable int cid, HttpSession session, Model model) {
+		String sessUid = (String) session.getAttribute("sessUid");
+		LikeC like = likeService.getLike(cid, sessUid);
+		if (like == null) {
+			likeService.insertLike(new LikeC(sessUid, cid, 1));
+			session.setAttribute("likeClicked", 1);
+		} else {
+			int value = likeService.toggleLike(like);
+			session.setAttribute("likeClicked", value);
+		}
+		int count = likeService.getLikeCount(cid);
+		boardCService.updateLikeCount(cid, count);
+		model.addAttribute("count", count);
+		return "boardC/detailC::#likeCount"; // 콜론 두개 : 자바의 람다식 표현 - 값이 바뀌는 것
+	}
+
 }
