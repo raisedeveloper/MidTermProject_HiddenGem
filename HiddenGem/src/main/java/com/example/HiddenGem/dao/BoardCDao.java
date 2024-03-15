@@ -14,17 +14,17 @@ import com.example.abbs.entity.Board;
 public interface BoardCDao {
 
 	@Select("SELECT b.*, u.uname FROM boardc b"
-			+ " JOIN users u ON b.cid=u.uid"
+			+ " JOIN users u ON b.uid=u.uid"
 			+ " WHERE b.cid=#{cid}")
 	BoardC getBoardC(int cid);
 	
 	@Select("select count(b.cid) from boardc b"
-			+ " JOIN users u ON b.cid=u.uid"
+			+ " JOIN users u ON b.uid=u.uid"
 			+ " where b.isDeleted=0 and ${field} like #{query}")
 	int getBoardCCount(String field, String query);
 	
 	@Select("SELECT b.*, u.uname FROM boardc b"
-			+ " JOIN users u ON b.cid=u.uid"
+			+ " JOIN users u ON b.uid=u.uid"
 			+ " WHERE b.isDeleted=0 and ${field} like #{query}"
 			+ " ORDER BY b.modTime desc"
 			+ " LIMIT #{count} OFFSET #{offset}")

@@ -64,12 +64,9 @@
 							<th style="width: 10%">좋아요</th>
 						</tr>
 						<tr th:each="boardC: ${boardList}">
-							<td>[[${boardC.bid}]]</td>
+							<td>[[${boardC.cid}]]</td>
 							<td>
-								<a th:href="@{/boardC/detail/{x}/{y}(x=${boardC.bid},y=${boardC.uid})}">[[${boardC.title}]]</a>
-								<span th:if="${boardC.replyCount ge 1}">
-									<span class="text-danger">&#91;[[${boardC.replyCount}]]&#93;</span>
-								</span>
+								<a th:href="@{/boardC/detail/{x}/{y}(x=${boardC.cid},y=${boardC.uid})}">[[${boardC.title}]]</a>
 							</td>
 							<td>[[${boardC.uname}]]</td>
 							<td>[[${#temporals.format(boardC.modTime, 'yy-MM-dd HH:mm')}]]</td>
