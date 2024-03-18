@@ -6,43 +6,34 @@ public class Reply {
 	private int rid;
 	private String comment;
 	private LocalDateTime regTime;
-	private String uid;
-	private int bid;
 	private int isMine;
 	private String uname;
 
-	public Reply() {}
+	// user와 연결
+	private String uid;
+	// 보드와 연결
+	private int fid;
 
-	public Reply(int rid, String comment, LocalDateTime regTime, String uid, int bid, int isMine, String uname) {
+	public Reply() {
+	}
+
+	public Reply(int rid, String comment, LocalDateTime regTime, int isMine, String uname, String uid, int fid) {
+		super();
 		this.rid = rid;
 		this.comment = comment;
 		this.regTime = regTime;
-		this.uid = uid;
-		this.bid = bid;
 		this.isMine = isMine;
 		this.uname = uname;
-	}
-
-	public Reply(String comment, String uid, int bid, int isMine) {
-		this.comment = comment;
 		this.uid = uid;
-		this.bid = bid;
-		this.isMine = isMine;
+		this.fid = fid;
 	}
 
-	public Reply(int rid, String comment, LocalDateTime regTime, String uid, int bid, int isMine) {
-		this.rid = rid;
+	public Reply(String comment, int isMine, String uid, int fid) {
+		super();
 		this.comment = comment;
-		this.regTime = regTime;
-		this.uid = uid;
-		this.bid = bid;
 		this.isMine = isMine;
-	}
-
-	@Override
-	public String toString() {
-		return "Reply [rid=" + rid + ", comment=" + comment + ", regTime=" + regTime + ", uid=" + uid + ", bid=" + bid
-				+ ", isMine=" + isMine + "]";
+		this.uid = uid;
+		this.fid = fid;
 	}
 
 	public int getRid() {
@@ -69,22 +60,6 @@ public class Reply {
 		this.regTime = regTime;
 	}
 
-	public String getUid() {
-		return uid;
-	}
-
-	public void setUid(String uid) {
-		this.uid = uid;
-	}
-
-	public int getBid() {
-		return bid;
-	}
-
-	public void setBid(int bid) {
-		this.bid = bid;
-	}
-
 	public int getIsMine() {
 		return isMine;
 	}
@@ -100,4 +75,27 @@ public class Reply {
 	public void setUname(String uname) {
 		this.uname = uname;
 	}
+
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+
+	public int getFid() {
+		return fid;
+	}
+
+	public void setFid(int fid) {
+		this.fid = fid;
+	}
+
+	@Override
+	public String toString() {
+		return "Reply [rid=" + rid + ", comment=" + comment + ", regTime=" + regTime + ", isMine=" + isMine + ", uname="
+				+ uname + ", uid=" + uid + ", fid=" + fid + "]";
+	}
+
 }

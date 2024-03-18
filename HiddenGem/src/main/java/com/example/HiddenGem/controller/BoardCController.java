@@ -17,9 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.example.HiddenGem.entity.BoardC;
-import com.example.HiddenGem.entity.LikeC;
+import com.example.HiddenGem.entity.Like;
 import com.example.HiddenGem.service.BoardCService;
-import com.example.HiddenGem.service.LikeCService;
+import com.example.HiddenGem.service.LikeService;
 import com.example.HiddenGem.util.JsonUtil;
 
 import jakarta.servlet.http.HttpSession;
@@ -28,7 +28,7 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/boardC")
 public class BoardCController {
 	@Autowired private BoardCService boardCService;
-	@Autowired private LikeCService likeService;
+	@Autowired private LikeService likeService;
 	@Autowired private JsonUtil jsonUtil;
 	@Value("${spring.servlet.multipart.location}") private String uploadDir;
 
@@ -104,7 +104,7 @@ public class BoardCController {
 		model.addAttribute("boardC", boardC);
 		
 		// 좋아요 처리
-		LikeC like = likeService.getLike(cid, sessUid);
+		Like like = likeService.getLike(cid, sessUid);
 		if (like == null)
 			session.setAttribute("likeClicked", 0);
 		else
@@ -126,9 +126,9 @@ public class BoardCController {
 	@GetMapping("/like/{cid}")
 	public String like(@PathVariable int cid, HttpSession session, Model model) {
 		String sessUid = (String) session.getAttribute("sessUid");
-		LikeC like = likeService.getLike(cid, sessUid);
+		Like like = likeService.getLike(cid, sessUid);
 		if (like == null) {
-			likeService.insertLike(new LikeC(sessUid, cid, 1));
+			likeService.insertLike(new Like(sessUid, cid, 1));
 			session.setAttribute("likeClicked", 1);
 		} else {
 			int value = likeService.toggleLike(like);
@@ -137,7 +137,7 @@ public class BoardCController {
 		int count = likeService.getLikeCount(cid);
 		boardCService.updateLikeCount(cid, count);
 		model.addAttribute("count", count);
-		return "boardC/detailC::#likeCount"; // 콜론 두개 : 자바의 람다식 표현 - 값이 바뀌는 것
+		return "boardf/detail::#likeCount"; // 콜론 두개 : 자바의 람다식 표현 - 값이 바뀌는 것f
 	}
 
 }

@@ -2,6 +2,7 @@ package com.example.HiddenGem.controller;
 
 import java.io.File;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -91,7 +93,7 @@ public class UserController {
 			// 환영 메시지
 			log.info("Info Login: {}, {}", uid, user.getUname());
 			model.addAttribute("msg", user.getUname() + "님 환영합니다.");
-			model.addAttribute("url", "/mid/boardC/listC");
+			model.addAttribute("url", "/mid/boardf/list");
 			break;
 
 		case UserService.USER_NOT_EXIST:
@@ -113,8 +115,62 @@ public class UserController {
 		return "redirect:/user/login";
 	}
 	
-	@GetMapping("/test")
-	public String test() {
-		return "testpage";
-	}
+	/*
+	 * update
+	 */
+	@GetMapping("/update/{uid}")
+	   public String update(@PathVariable String uid, Model model) {
+	   // uid값 받기- uid로 user 만들기-넘기기 
+	      User user = uSvc.getUserByUid(uid);
+	      model.addAttribute("user", user);
+	      return "user/update";
+	   }
+	   
+	   @PostMapping("/update")
+	   public String update(MultipartHttpServletRequest req, Model model, String uid ,String pwd, 
+	         String pwd2, String uname, String email
+	         ) {
+	      // uid로 user 가져오기(바꾸기 전)- pwd 맞게 했는지 확인 - 바꿔주기(setter 이용) - user 업데이트 적용
+	      
+	      User user = uSvc.getUserByUid(uid);
+	      String filename = null;
+	      MultipartFile filePart = req.getFile("profile");
+	      
+	      // 비번 맞게 입력했는지 확인 후 사진 바꾸기.  암호화 및 암호화한 비번으로 바꾸기는 userserviceImpl에 있음
+	      if(pwd != null && pwd.equals(pwd2)) {
+	         // 내가 입력한 비번 암호화 
+	         String hashedPwd = BCrypt.hashpw(pwd, BCrypt.gensalt());
+	         user.setPwd(hashedPwd);
+	         
+	         // 이미지 처리
+	         if(filePart.getContentType().contains("image")) {
+	            filename = filePart.getOriginalFilename();
+	            String path = uploadDir + "profile/" + filename;
+	            try {
+	               filePart.transferTo(new File(path));
+	            } catch (Exception e) {
+	               e.printStackTrace();
+	            }
+	            filename = imageUtil.squareImage(uid, filename);
+	      }
+	         
+	      }else {
+	         model.addAttribute("msg", "비밀번호가 틀림");
+	         model.addAttribute("url", "/abbs/user/update?uid=" + uid);
+	         return "common/alertMsg";
+	      }
+	            
+	      // 프로파일 바꾸기
+	      user.setProfile(filename);
+	      
+	      // 바꾸는 작업
+	      user.setUname(uname);
+	      user.setEmail(email);
+	      
+	      // 바꾼 것 적용
+	      uSvc.updateUser(user);
+	      
+	      return "redirect:/user/login";
+	   }
+
 }
