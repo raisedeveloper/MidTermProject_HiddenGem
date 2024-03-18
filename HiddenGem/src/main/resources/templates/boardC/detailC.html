@@ -20,9 +20,9 @@
 					// console.log("count=" + count);		
 					let newCount = $('#likeCount').text();
 					if (oldCount > newCount)
-						$('#likeIcon').attr({'class': 'fa-regular fa-thumbs-up'}); 	// 좋아요 취소
+						$('#likeIcon').attr({ 'class': 'fa-regular fa-thumbs-up' }); 	// 좋아요 취소
 					else
-						$('#likeIcon').attr({'class': 'fa-solid fa-thumbs-up'});		// 좋아요 누름
+						$('#likeIcon').attr({ 'class': 'fa-solid fa-thumbs-up' });		// 좋아요 누름
 				}
 			});
 		}
@@ -48,8 +48,7 @@
 							<a th:href="@{/boardC/listC(p=${currentBoardPage},f=${field},q=${query})}"><i
 									class="fa-solid fa-table-list ms-5"></i> 목록</a>
 							<span th:if="${session.sessUid eq boardC.uid}"> <!-- 본인만 수정/삭제 가능 -->
-								<a th:href="@{/boardC/updateC/{x}(x=${boardC.cid})}"><i
-										class="fa-solid fa-file-pen ms-3"></i> 수정</a>
+								<a th:href="@{/boardC/updateC/{x}(x=${boardC.cid})}"><i class="fa-solid fa-file-pen ms-3"></i> 수정</a>
 								<a href="javascript:void" onclick="deleteBoard()"><i class="fa-solid fa-trash ms-3"></i>
 									삭제</a>
 							</span>
@@ -73,8 +72,7 @@
 							<h6>
 								<span th:if="${session.sessUid eq boardC.uid}"> <!-- 본인은 좋아요 누르지 못함 -->
 									<a href="#">
-										<span th:if="${session.likeClicked == 1}"><i id="likeIcon"
-												class="fa-solid fa-thumbs-up"></i></span>
+										<span th:if="${session.likeClicked == 1}"><i id="likeIcon" class="fa-solid fa-thumbs-up"></i></span>
 										<span th:if="${session.likeClicked == 0}"><i id="likeIcon"
 												class="fa-regular fa-thumbs-up"></i></span>
 										[[${count}]]
@@ -82,8 +80,7 @@
 								</span>
 								<span th:if="${session.sessUid ne boardC.uid}">
 									<a href="#" th:onclick="likeClick([[${boardC.cid}]])">
-										<span th:if="${session.likeClicked == 1}"><i id="likeIcon"
-												class="fa-solid fa-thumbs-up"></i></span>
+										<span th:if="${session.likeClicked == 1}"><i id="likeIcon" class="fa-solid fa-thumbs-up"></i></span>
 										<span th:if="${session.likeClicked == 0}"><i id="likeIcon"
 												class="fa-regular fa-thumbs-up"></i></span>
 										<span id="likeCount" th:text="${count}"></span>

@@ -98,40 +98,22 @@ public class BoardFController {
 	 */
 
 	@GetMapping("/insert")
-	public String insertForm(Model model) {
-		return "boardf/insert";
-	}
+	   public String insertForm(Model model) {
+	      return "boardf/insert";
+	   }
 
-	@PostMapping("/insert")
-	public String insertProc(String title, String foodCategory, String opening, String location, String tel,
-			String info, String uid, MultipartHttpServletRequest req, HttpSession session) {
+	   @PostMapping("/insert")
+	   public String insertProc(String title, String foodCategory, String opening, String location, String tel,
+	         String info, String content, String uid, MultipartHttpServletRequest req, HttpSession session) {
 
-		String sessUid = (String) session.getAttribute("sessUid");
-		List<MultipartFile> uploadFileList = req.getFiles("files");
-
-		List<String> fileList = new ArrayList<>();
-		for (MultipartFile part : uploadFileList) {
-			// 첨부 파일이 없는 경우 - application/octet-stream
-			if (part.getContentType().contains("octet-stream"))
-				continue;
-
-			String filename = part.getOriginalFilename();
-			String uploadPath = uploadDir + "foodUpload/" + filename;
-			try {
-				part.transferTo(new File(uploadPath));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			String fileUrl = "/foodUpload/" + filename; // 이미지의 원본 주소 생성
-			fileList.add(fileUrl); // 이미지의 원본 주소를 리스트에 추가
-		}
-		String files = jsonUtil.list2Json(fileList);
-
-		// boardf에 들어가야 하는 것
-		BoardF board = new BoardF(title, foodCategory, opening, location, tel, info, sessUid, files);
-		boardFService.insertBoardF(board);
-		return "redirect:/boardf/list";
-	}
+	      String sessUid = (String) session.getAttribute("sessUid");
+	      String foodImg = content;
+	 
+	      // boardf에 들어가야 하는 것
+	      BoardF board = new BoardF(title, foodCategory, opening, location, tel, info, sessUid, foodImg);
+	      boardFService.insertBoardF(board);
+	      return "redirect:/boardf/list";
+	   }
 
 	/*
 	 * detail
