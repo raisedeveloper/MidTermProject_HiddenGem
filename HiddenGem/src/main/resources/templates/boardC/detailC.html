@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
 	<header th:replace="~{fragments/base :: head}"></header>
 	<style>
-		td, th { text-align: center; }
+		td,
+		th {
+			text-align: center;
+		}
 	</style>
 	<script th:inline="javascript">
-			function likeClick(cid) {
+		function likeClick(cid) {
 			let oldCount = $('#likeCount').text();
 			$.ajax({
 				type: 'GET',
 				url: '/mid/boardC/like/' + cid,
-				success: function(count) {				
+				success: function (count) {
 					$('#likeCount').replaceWith(count);
 					// console.log("count=" + count);		
 					let newCount = $('#likeCount').text();
-					if (oldCount > newCount) 
+					if (oldCount > newCount)
 						$('#likeIcon').attr({'class': 'fa-regular fa-thumbs-up'}); 	// 좋아요 취소
 					else
 						$('#likeIcon').attr({'class': 'fa-solid fa-thumbs-up'});		// 좋아요 누름
@@ -27,6 +31,7 @@
 		}
 	</script>
 </head>
+
 <body>
 	<div th:insert="~{fragments/base :: top}"></div>
 
@@ -40,12 +45,15 @@
 				<main id="main">
 					<h3><strong>게시글 상세 조회</strong>
 						<span style="font-size:16px">
-							<a th:href="@{/boardC/listC(p=${currentBoardPage},f=${field},q=${query})}"><i class="fa-solid fa-table-list ms-5"></i> 목록</a>
-							<span th:if="${session.sessUid eq boardC.uid}">	<!-- 본인만 수정/삭제 가능 -->
-								<a th:href="@{/boardC/updateC/{x}(x=${boardC.cid})}"><i class="fa-solid fa-file-pen ms-3"></i> 수정</a>
-								<a href="javascript:void" onclick="deleteBoard()"><i class="fa-solid fa-trash ms-3"></i> 삭제</a>
+							<a th:href="@{/boardC/listC(p=${currentBoardPage},f=${field},q=${query})}"><i
+									class="fa-solid fa-table-list ms-5"></i> 목록</a>
+							<span th:if="${session.sessUid eq boardC.uid}"> <!-- 본인만 수정/삭제 가능 -->
+								<a th:href="@{/boardC/updateC/{x}(x=${boardC.cid})}"><i
+										class="fa-solid fa-file-pen ms-3"></i> 수정</a>
+								<a href="javascript:void" onclick="deleteBoard()"><i class="fa-solid fa-trash ms-3"></i>
+									삭제</a>
 							</span>
-							<span th:if="${session.sessUid ne boardC.uid}">	
+							<span th:if="${session.sessUid ne boardC.uid}">
 								<a href="#" class="disabled-link"><i class="fa-solid fa-file-pen ms-3"></i> 수정</a>
 								<a href="#" class="disabled-link"><i class="fa-solid fa-trash ms-3"></i> 삭제</a>
 							</span>
@@ -55,24 +63,29 @@
 					<div class="row mb-3">
 						<div class="col-8">
 							<h5>[[${boardC.title}]]</h5>
-							<h6>글번호: [[${boardC.cid}]] &nbsp;&nbsp; 
-								<span th:text="${#temporals.format(boardC.modTime, 'yyyy-MM-dd HH:mm:ss')}"></span></h6>
+							<h6>글번호: [[${boardC.cid}]] &nbsp;&nbsp;
+								<span th:text="${#temporals.format(boardC.modTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+							</h6>
 						</div>
 						<div class="col-4 text-end">
 							<h5>[[${boardC.uname}]]</h5>
 							<h6>조회 [[${boardC.viewCount}]] &nbsp;&nbsp;</h6>
 							<h6>
-								<span th:if="${session.sessUid eq boardC.uid}">	<!-- 본인은 좋아요 누르지 못함 -->
+								<span th:if="${session.sessUid eq boardC.uid}"> <!-- 본인은 좋아요 누르지 못함 -->
 									<a href="#">
-										<span th:if="${session.likeClicked == 1}"><i id="likeIcon" class="fa-solid fa-thumbs-up"></i></span>
-										<span th:if="${session.likeClicked == 0}"><i id="likeIcon" class="fa-regular fa-thumbs-up"></i></span>
+										<span th:if="${session.likeClicked == 1}"><i id="likeIcon"
+												class="fa-solid fa-thumbs-up"></i></span>
+										<span th:if="${session.likeClicked == 0}"><i id="likeIcon"
+												class="fa-regular fa-thumbs-up"></i></span>
 										[[${count}]]
 									</a>
 								</span>
 								<span th:if="${session.sessUid ne boardC.uid}">
 									<a href="#" th:onclick="likeClick([[${boardC.cid}]])">
-										<span th:if="${session.likeClicked == 1}"><i id="likeIcon" class="fa-solid fa-thumbs-up"></i></span>
-										<span th:if="${session.likeClicked == 0}"><i id="likeIcon" class="fa-regular fa-thumbs-up"></i></span>
+										<span th:if="${session.likeClicked == 1}"><i id="likeIcon"
+												class="fa-solid fa-thumbs-up"></i></span>
+										<span th:if="${session.likeClicked == 0}"><i id="likeIcon"
+												class="fa-regular fa-thumbs-up"></i></span>
 										<span id="likeCount" th:text="${count}"></span>
 									</a>
 								</span>
@@ -80,7 +93,8 @@
 						</div>
 						<hr>
 						<div class="col-12" th:utext="${boardC.content}"></div>
-						<br><br><hr>							
+						<br><br>
+						<hr>
 					</div>
 				</main>
 			</div>
@@ -97,12 +111,13 @@
 					<h4 class="modal-title">게시글 삭제</h4>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 				</div>
-			
+
 				<!-- Modal body -->
 				<div class="modal-body">
 					<strong>정말로 삭제하시겠습니까?</strong>
 					<div class="text-center mt-5">
-						<button type="button" class="btn btn-danger" th:onclick="|location.href='@{/boardC/delete/{x}(x=${boardC.cid})}'|">삭제</button>
+						<button type="button" class="btn btn-danger"
+							th:onclick="|location.href='@{/boardC/delete/{x}(x=${boardC.cid})}'|">삭제</button>
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 					</div>
 				</div>
@@ -110,4 +125,5 @@
 		</div>
 	</div>
 </body>
+
 </html>

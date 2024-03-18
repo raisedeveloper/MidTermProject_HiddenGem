@@ -8,7 +8,7 @@ import com.example.HiddenGem.entity.BoardF;
 
 @Service
 public interface BoardFService {
-	public static final int COUNT_PER_PAGE = 6; // 한 페이지당 글의 목록 및 갯수
+	public static final int COUNT_PER_PAGE = 5; // 한 페이지당 글의 목록 및 갯수
 	public static final int PAGE_PER_SCREEN = 10; // 한 화면에 표시되는 페이지 갯수
 	
 	BoardF getBoardF(int fid);

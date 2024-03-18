@@ -1,17 +1,23 @@
 package com.example.HiddenGem.entity;
 
-public class menu {
+public class Menu {
 	private int mid;
 	private String food;
-	private int price;
+	private String price;
 	private String foodTitle;
-	public menu() {
+	public Menu() {
 	}
-	public menu(int mid, String food, int price, String foodTitle) {
+	public Menu(int mid, String food, String price, String foodTitle) {
 		this.mid = mid;
 		this.food = food;
 		this.price = price;
 		this.foodTitle = foodTitle;
+	}
+	
+	
+	public Menu(String food, String price) {
+		this.food = food;
+		this.price = price;
 	}
 	@Override
 	public String toString() {
@@ -29,10 +35,10 @@ public class menu {
 	public void setFood(String food) {
 		this.food = food;
 	}
-	public int getPrice() {
+	public String getPrice() {
 		return price;
 	}
-	public void setPrice(int price) {
+	public void setPrice(String price) {
 		this.price = price;
 	}
 	public String getFoodTitle() {

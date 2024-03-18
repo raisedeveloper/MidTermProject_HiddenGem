@@ -19,9 +19,11 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.example.HiddenGem.entity.BoardF;
 import com.example.HiddenGem.entity.Like;
+import com.example.HiddenGem.entity.Menu;
 import com.example.HiddenGem.entity.Reply;
 import com.example.HiddenGem.service.BoardFService;
 import com.example.HiddenGem.service.LikeService;
+import com.example.HiddenGem.service.MenuService;
 import com.example.HiddenGem.service.ReplyService;
 import com.example.HiddenGem.util.JsonUtil;
 
@@ -41,6 +43,8 @@ public class BoardFController {
 	ReplyService replyService;
 	@Autowired
 	LikeService likeService;
+	@Autowired
+	MenuService menuService;
 
 	// 다른 변수 더 넣을 공간
 
@@ -132,6 +136,7 @@ public class BoardFController {
 	/*
 	 * detail
 	 */
+	@SuppressWarnings("null")
 	@GetMapping("/detail/{fid}/{uid}")
 	public String detail(@PathVariable int fid, @PathVariable String uid, String option, HttpSession session,
 			Model model) {
@@ -154,14 +159,14 @@ public class BoardFController {
 		model.addAttribute("boardf", boardf);
 
 		// 좋아요 처리
-		 Like like = likeService.getLike(fid, sessUid);
-		 if(like == null) {
-			 session.setAttribute("likeClicked", 1);
-			 
-		 } else {
-			 session.setAttribute("likeClicked", like.getValue());
-		 }		
-		 
+		Like like = likeService.getLike(fid, sessUid);
+		if (like == null) {
+			session.setAttribute("likeClicked", 1);
+
+		} else {
+			session.setAttribute("likeClicked", like.getValue());
+		}
+
 		model.addAttribute("count", boardf.getLikeCount());
 
 		/*
@@ -170,18 +175,31 @@ public class BoardFController {
 
 		List<Reply> replyList = replyService.getReplyList(fid);
 		model.addAttribute("replyList", replyList);
-		System.out.println(replyList);
-		
-		
+
 		/*
 		 * 지도 보여주기
 		 */
 		model.addAttribute("address", boardf.getLocation());
 		model.addAttribute("title", boardf.getTitle());
-//		model.addAttribute("menu" , menu);
+
+		/*
+		 * 메뉴 보여주기
+		 */
+//		List<Menu> menuList = menuService.getMenuList(boardf.getTitle());
+//		model.addAttribute("menuList" , menuList);
+		Menu menu = menuService.getMenuByName(boardf.getTitle());
+		String[] name = menu.getFood().split(", ");
+		String[] price = menu.getPrice().split(", ");
+		List<Menu> menuList = new ArrayList<>();
+
+		for (int i = 0; i < price.length; i++) {
+			menuList.add(new Menu(name[i], price[i]));
+		}
+
+		model.addAttribute("menuList", menuList);
 		return "boardf/detail";
 	}
-	
+
 	// AJAX 처리
 	@GetMapping("/like/{fid}")
 	public String like(@PathVariable int fid, HttpSession session, Model model) {
@@ -214,6 +232,5 @@ public class BoardFController {
 
 		return "redirect:/boardf/detail/" + fid + "/" + uid + "?option=DNI";
 	}
-
 
 }
