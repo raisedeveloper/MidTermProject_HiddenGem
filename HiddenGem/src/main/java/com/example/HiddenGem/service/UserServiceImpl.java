@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.HiddenGem.dao.UserDao;
+import com.example.HiddenGem.entity.BoardF;
 import com.example.HiddenGem.entity.User;
 
 
@@ -59,6 +60,11 @@ public class UserServiceImpl implements UserService{
 		if (BCrypt.checkpw(pwd, user.getPwd())) 
 			return correct_login;
 		return WRONG_PASSWORD;
+	}
+
+	@Override
+	public List<BoardF> getUserLikeList(String uid) {
+		return uDao.getUserLikeList(uid);
 	}
 
 

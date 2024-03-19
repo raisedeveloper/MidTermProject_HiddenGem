@@ -1,6 +1,7 @@
 package com.example.HiddenGem.controller;
 
 import java.io.File;
+import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.example.HiddenGem.entity.BoardF;
 import com.example.HiddenGem.entity.User;
 import com.example.HiddenGem.service.UserService;
 import com.example.HiddenGem.util.ImageUtil;
@@ -89,6 +91,9 @@ public class UserController {
 			session.setAttribute("profile", user.getProfile());
 			session.setAttribute("email", user.getEmail());
 			session.setAttribute("access", user.getAccess());
+			session.setAttribute("sns", user.getSns());
+			session.setAttribute("link", user.getLink());
+			session.setAttribute("statusMessage", user.getStatusMessage());
 
 			// 환영 메시지
 			log.info("Info Login: {}, {}", uid, user.getUname());
@@ -171,6 +176,17 @@ public class UserController {
 		uSvc.updateUser(user);
 
 		return "redirect:/main";
+	}
+
+	@GetMapping("/mypage/{uid}")
+	public String mypage(@PathVariable String uid, Model model, HttpSession session) {
+		User user = uSvc.getUserByUid(uid);
+		model.addAttribute("user", user);
+
+		List<BoardF> boardLikeList = uSvc.getUserLikeList(uid);
+		model.addAttribute("boardLikeList", boardLikeList);
+
+		return "user/mypage";
 	}
 
 }

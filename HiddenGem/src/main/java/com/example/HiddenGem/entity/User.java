@@ -12,7 +12,10 @@ public class User {
 	private String profile;
 	private int access;
 	private String sns;
+	private String link;
+	private String statusMessage;
 
+	
 	public User() {
 	}
 
@@ -23,9 +26,10 @@ public class User {
 		this.email = email;
 		this.profile = profile;
 	}
-
+	
 	public User(String uid, String pwd, String uname, String email, LocalDate regDate, int isDeleted, String profile,
-			int access, String sns) {
+			int access, String sns, String link, String statusMessage) {
+		super();
 		this.uid = uid;
 		this.pwd = pwd;
 		this.uname = uname;
@@ -35,6 +39,24 @@ public class User {
 		this.profile = profile;
 		this.access = access;
 		this.sns = sns;
+		this.link = link;
+		this.statusMessage = statusMessage;
+	}
+
+	public String getStatusMessage() {
+		return statusMessage;
+	}
+
+	public void setStatusMessage(String statusMessage) {
+		this.statusMessage = statusMessage;
+	}
+
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
 	}
 
 	public String getSns() {

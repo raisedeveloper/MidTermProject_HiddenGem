@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.HiddenGem.entity.BoardF;
 import com.example.HiddenGem.entity.User;
 
 
@@ -27,4 +28,7 @@ public interface UserService {
 	void deleteUser(String uid);
 	
 	int login(String uid, String pwd);
+	
+	List<BoardF> getUserLikeList (String uid);
+	
 }

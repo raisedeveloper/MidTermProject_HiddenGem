@@ -86,12 +86,13 @@
         <div class="col-3">
             <aside th:fragment="aside" class="border border-3">
                 <div th:if="${session.sessUid}">
-                    <img th:src="@{/file/profile/{x}(x=${session.profile})}" class="rounded-circle ms-3 mt-3" width="90%">
+                    <img th:if="${session.profile}" th:src="@{/file/profile/{x}(x=${session.profile})}" class="rounded-circle ms-3 mt-3" width="90%">
+                    <img th:unless="${session.profile}" src="/mid/img/person.png" class="rounded-circle ms-3 mt-3" width="90%">
 										<br><br>
-                    <div class="ms-2">[[${session.sessUid}]]</div>
+                    <div class="ms-2" style="font-weight: bold;">[[${session.sessUid}]]</div>
                     <div>
                         <i class="fa fa-envelope ms-2 me-2"></i>[[${session.email}]]<br>
-                        <i class="fa-solid fa-envelopes-bulk"></i><a th:href="#">[[${session.sns}]]</a><br>
+                        <i class="fa-solid fa-link ms-2 me-2"></i><a th:href="${session.link}">[[${session.sns}]]</a><br>
                         <a class="btn btn-sm btn-outline-primary mt-3" style="margin-left: 10px;" th:href="@{/user/update/{x}(x=${session.sessUid})}">Edit Profile</a>
                     </div>
                     <br>

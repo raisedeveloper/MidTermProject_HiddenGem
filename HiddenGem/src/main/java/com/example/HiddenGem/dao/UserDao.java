@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.example.HiddenGem.entity.BoardF;
 import com.example.HiddenGem.entity.User;
 
 
@@ -23,7 +24,7 @@ public interface UserDao {
          + " #{profile}, #{access}, #{sns})")
    void insertUser(User user);
    
-   @Update("update users set pwd=#{pwd}, uname=#{uname}, email=#{email}, profile=#{profile}, sns=#{sns}"
+   @Update("update users set pwd=#{pwd}, uname=#{uname}, email=#{email}, profile=#{profile}, sns=#{sns}, link=#{link}, statusMessage=#{statusMessage}"
          + "  where uid=#{uid}")
    void updateUser(User user);
    
@@ -33,4 +34,7 @@ public interface UserDao {
    @Select("select count(uid) from users where isDeleted=0")
    int getUserCount();
    
+   @Select("select * from boardf u join likef f on u.uid=f.uid where f.value=1 and u.uid={uid}")
+   List<BoardF> getUserLikeList(String uid);
+
 }
