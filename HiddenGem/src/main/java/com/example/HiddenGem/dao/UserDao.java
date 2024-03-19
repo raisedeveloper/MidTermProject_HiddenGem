@@ -20,10 +20,10 @@ public interface UserDao {
    List<User> getUserList(int count, int offset);
    
    @Insert("insert into users values (#{uid}, #{pwd}, #{uname}, #{email}, default, default,"
-         + " #{profile}, #{access})")
+         + " #{profile}, #{access}, #{sns})")
    void insertUser(User user);
    
-   @Update("update users set pwd=#{pwd}, uname=#{uname}, email=#{email}, profile=#{profile},"
+   @Update("update users set pwd=#{pwd}, uname=#{uname}, email=#{email}, profile=#{profile}, sns=#{sns}"
          + "  where uid=#{uid}")
    void updateUser(User user);
    

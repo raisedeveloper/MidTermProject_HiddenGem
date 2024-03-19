@@ -11,6 +11,7 @@ public class User {
 	private int isDeleted;
 	private String profile;
 	private int access;
+	private String sns;
 
 	public User() {
 	}
@@ -24,8 +25,7 @@ public class User {
 	}
 
 	public User(String uid, String pwd, String uname, String email, LocalDate regDate, int isDeleted, String profile,
-			int access) {
-		super();
+			int access, String sns) {
 		this.uid = uid;
 		this.pwd = pwd;
 		this.uname = uname;
@@ -34,6 +34,15 @@ public class User {
 		this.isDeleted = isDeleted;
 		this.profile = profile;
 		this.access = access;
+		this.sns = sns;
+	}
+
+	public String getSns() {
+		return sns;
+	}
+
+	public void setSns(String sns) {
+		this.sns = sns;
 	}
 
 	public String getUid() {
