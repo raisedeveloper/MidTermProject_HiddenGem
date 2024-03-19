@@ -1,6 +1,5 @@
 package com.example.HiddenGem.controller;
 
-import java.io.File;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.example.HiddenGem.entity.BoardF;
@@ -59,7 +57,6 @@ public class BoardFController {
 	 * list
 	 */
 	@GetMapping("/list") // 이름은 p로하고 값이 없으면 1로
-
 	public String list(@RequestParam(name = "p", defaultValue = "1") int page,
 			@RequestParam(name = "f", defaultValue = "title") String field,
 			@RequestParam(name = "q", defaultValue = "") String query, HttpSession session, Model model) {
@@ -118,7 +115,6 @@ public class BoardFController {
 	/*
 	 * detail
 	 */
-	@SuppressWarnings("null")
 	@GetMapping("/detail/{fid}/{uid}")
 	public String detail(@PathVariable int fid, @PathVariable String uid, String option, HttpSession session,
 			Model model) {

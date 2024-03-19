@@ -27,7 +27,6 @@ public interface BoardFDao {
 			+ " WHERE b.isDeleted=0 and ${field} like #{query}"
 			+ " ORDER BY b.modTime DESC"
 			+ " LIMIT #{count} OFFSET #{offset}")
-	
 	List<BoardF> getBoardFList(String field, String query, int count, int offset);
 	
 	@Insert("insert into boardF values(default, #{uid}, #{title}, #{foodCategory}, #{opening}, "

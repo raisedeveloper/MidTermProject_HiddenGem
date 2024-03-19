@@ -33,34 +33,31 @@
 							<td style="width: 52%; text-align: left">
 								<h3><strong class="me-5">게시글 목록</strong>
 									<span style="font-size:16px"><a href="/mid/boardf/insert"><i
-												class="fa-solid fa-pen-to-square"></i> 글
-											쓰기</a></span>
+												class="fa-solid fa-pen-to-square"></i> 글 쓰기</a></span>
 								</h3>
 							</td>
 							<!--이상 무 -->
 							<td style="width: 16%">
 								<span value="title" selected} class="form-control" id="field">수원시 구 검색</span>
 							</td>
-							<!--이상 무 -->
-
+							<!-- 
 							<td style="width: 24%">
 								<span th:unless="${query}">
 									<input class="form-control" type="text" id="query" placeholder="검색할 내용">
 								</span>
-								<!-- 이상	-->
 								<span th:if="${query}">
 									<input class="form-control" type="text" id="query" th:value="${query}">
 								</span>
 							</td>
-							<!-- 이상
-								-->
+							
+								
 							<td style="width: 8%">
 								<button class="btn btn-outline-primary" onclick="search()">검색</button>
 							</td>
+							-->
 						</tr>
 					</table>
 					<hr>
-					<!-- -->
 					<table class="table">
 						<tr>
 							<th style="width: 8%">ID</th>
@@ -70,7 +67,7 @@
 							<th style="width: 10%">조회수</th>
 							<th style="width: 10%">좋아요</th>
 						</tr>
-						<tr th:each="boardf: ${boardLikeList}">
+						<tr th:each="boardf: ${boardList}">
 							<td>[[${boardf.fid}]]</td>
 							<td>
 								<a

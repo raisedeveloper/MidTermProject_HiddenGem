@@ -21,7 +21,7 @@ public interface UserDao {
    List<User> getUserList(int count, int offset);
    
    @Insert("insert into users values (#{uid}, #{pwd}, #{uname}, #{email}, default, default,"
-         + " #{profile}, #{access}, #{sns})")
+         + " #{profile}, #{access}, #{sns}, #{link}, #{statusMessage})")
    void insertUser(User user);
    
    @Update("update users set pwd=#{pwd}, uname=#{uname}, email=#{email}, profile=#{profile}, sns=#{sns}, link=#{link}, statusMessage=#{statusMessage}"
@@ -34,7 +34,7 @@ public interface UserDao {
    @Select("select count(uid) from users where isDeleted=0")
    int getUserCount();
    
-   @Select("select * from boardf u join likef f on u.uid=f.uid where f.value=1 and u.uid={uid}")
+   @Select("select * from boardf u join likef f on u.fid=f.fid where f.value=1 and f.uid=#{uid}")
    List<BoardF> getUserLikeList(String uid);
 
 }

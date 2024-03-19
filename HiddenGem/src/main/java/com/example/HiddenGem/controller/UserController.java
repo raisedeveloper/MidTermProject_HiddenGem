@@ -1,6 +1,7 @@
 package com.example.HiddenGem.controller;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -41,8 +42,8 @@ public class UserController {
 	}
 
 	@PostMapping("/register")
-	public String registerProc(MultipartHttpServletRequest req, Model model, String uid, String pwd, String pwd2,
-			String uname, String email, String github, String insta, String location) {
+	public String registerProc(MultipartHttpServletRequest req, Model model, String uid, String pwd, String pwd2, String uname, String email, LocalDate regDate, int isDeleted, String profile,
+			int access, String sns, String link, String statusMessage) {
 		MultipartFile filePart = req.getFile("profile");
 		String fileName = null;
 
@@ -102,8 +103,8 @@ public class UserController {
 			break;
 
 		case UserService.USER_NOT_EXIST:
-			model.addAttribute("msg", "ID가 존재하지 않습니다. 회원가입 페이지로 이동합니다.");
-			model.addAttribute("url", "/mid/user/register");
+			model.addAttribute("msg", "ID가 존재하지 않습니다.");
+			model.addAttribute("url", "/mid/user/login");
 			break;
 
 		case UserService.WRONG_PASSWORD:
@@ -184,6 +185,7 @@ public class UserController {
 		model.addAttribute("user", user);
 
 		List<BoardF> boardLikeList = uSvc.getUserLikeList(uid);
+		System.out.println(boardLikeList);
 		model.addAttribute("boardLikeList", boardLikeList);
 
 		return "user/mypage";
