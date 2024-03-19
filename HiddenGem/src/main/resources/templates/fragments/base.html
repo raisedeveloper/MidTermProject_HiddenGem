@@ -31,6 +31,7 @@
 				font-weight: bold;
 				font-size: 15px;
 			}
+			
 		</style>
 		<script src="/mid/js/aside.js?v=3"></script>
 	</header>
@@ -53,7 +54,7 @@
 					<ul class="navbar-nav ms-auto">
 						<li class="nav-item">
 							<span th:if="${session.sessUid}">
-								<a class="nav-link menu-color" href="#" style="display: inline-block;"><i class="fa-solid fa-image-portrait" ></i>마이페이지</a>
+								<a class="nav-link menu-color" th:href="@{/user/mypage/{x}(x=${session.sessUid})} " style="display: inline-block;"><i class="fa-solid fa-image-portrait" ></i>마이페이지</a>
 								<a class="nav-link menu-color" href="/mid/user/logout" style="display: inline-block;"><i class="fas fa-sign-out-alt"></i> 로그아웃</a>
 							</span>
 							<span th:unless="${session.sessUid}">
@@ -63,18 +64,18 @@
 										class="fa-regular fa-address-card"></i> 회원가입</a>
 							</span>
 						</li>
-						<li class="dropdown">
-							<button type="button" th:classappend="${menu eq 'board' ? 'active' : ''}" class="dropdown-toggle bg-transparent border-0 menu-color" data-bs-toggle="dropdown">						
-								수원시 구 선택
-							</button>
-							<ul class="dropdown-menu" style="background-color: #ff7f50;">
-								<li><a class="dropdown-item menu-color" href="/mid/boardf/list?p=1&f=location&q=팔달구">팔달구</a></li>
-								<li><a class="dropdown-item menu-color" href="/mid/boardf/list?p=1&f=location&q=권선구">권선구</a></li>
-								<li><a class="dropdown-item menu-color" href="/mid/boardf/list?p=1&f=location&q=영통구">영통구</a></li>
-								<li><a class="dropdown-item menu-color" href="/mid/boardf/list?p=1&f=location&q=장안구">장안구</a></li>
-							</ul>
-						</li>
 					</ul>
+					<div class="dropdown">
+						<button type="button" th:classappend="${menu eq 'board' ? 'active' : ''}" class="dropdown-toggle bg-transparent border-0 menu-color" data-bs-toggle="dropdown">						
+							수원시 구 선택
+						</button>
+						<ul class="dropdown-menu" style="background-color: #ff7f50;">
+							<li><a class="dropdown-item menu-color" href="/mid/boardf/list?p=1&f=location&q=팔달구">팔달구</a></li>
+							<li><a class="dropdown-item menu-color" href="/mid/boardf/list?p=1&f=location&q=권선구">권선구</a></li>
+							<li><a class="dropdown-item menu-color" href="/mid/boardf/list?p=1&f=location&q=영통구">영통구</a></li>
+							<li><a class="dropdown-item menu-color" href="/mid/boardf/list?p=1&f=location&q=장안구">장안구</a></li>
+						</ul>
+					</div>
 				</div>
 			</nav>
 		</header>
@@ -86,13 +87,12 @@
         <div class="col-3">
             <aside th:fragment="aside" class="border border-3">
                 <div th:if="${session.sessUid}">
-                    <img th:if="${session.profile}" th:src="@{/file/profile/{x}(x=${session.profile})}" class="rounded-circle ms-3 mt-3" width="90%">
-                    <img th:unless="${session.profile}" src="/mid/img/person.png" class="rounded-circle ms-3 mt-3" width="90%">
+                    <img th:src="@{/file/profile/{x}(x=${session.profile})}" class="rounded-circle ms-3 mt-3" width="90%">
 										<br><br>
-                    <div class="ms-2" style="font-weight: bold;">[[${session.sessUid}]]</div>
+                    <div class="ms-2">[[${session.sessUid}]]</div>
                     <div>
                         <i class="fa fa-envelope ms-2 me-2"></i>[[${session.email}]]<br>
-                        <i class="fa-solid fa-link ms-2 me-2"></i><a th:href="${session.link}">[[${session.sns}]]</a><br>
+                        <!-- <i class="fa-solid fa-envelopes-bulk"></i><a th:href="#">[[${session.sns}]]</a><br> -->
                         <a class="btn btn-sm btn-outline-primary mt-3" style="margin-left: 10px;" th:href="@{/user/update/{x}(x=${session.sessUid})}">Edit Profile</a>
                     </div>
                     <br>
