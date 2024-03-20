@@ -15,6 +15,13 @@
 			crossorigin="anonymous"></script>
 		<script src="https://code.jquery.com/jquery-3.7.1.min.js"
 			integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+			<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+		<script>
+		    $(document).ready(function () {
+		        $('.dropdown-toggle').dropdown();
+		    });
+		</script>
 		<style>
 			* {
 				font-family: 'Noto Sans KR', sans-serif;
@@ -43,7 +50,7 @@
 			<nav class="navbar navbar-expand-sm fixed-top" style="background-color: #ff7f50;">
 				<div class="container-fluid">
 					<ul class="navbar-nav">
-						<a class="navbar-brand ms-3 me-5" href="/mid/main"><img src="/mid/img/hiddengem_logo.png"
+						<a class="navbar-brand ms-3 me-5" href="/mid/boardf/main"><img src="/mid/img/hiddengem_logo.png"
 								height="60"></a>
 					</ul>
 					<span th:if="${session.sessUid}">
@@ -66,15 +73,15 @@
 						</li>
 					</ul>
 					<div class="dropdown">
-						<button type="button" th:classappend="${menu eq 'board' ? 'active' : ''}" class="dropdown-toggle bg-transparent border-0 menu-color" data-bs-toggle="dropdown">						
-							수원시 구 선택
-						</button>
-						<ul class="dropdown-menu" style="background-color: #ff7f50;">
-							<li><a class="dropdown-item menu-color" href="/mid/boardf/list?p=1&f=location&q=팔달구">팔달구</a></li>
-							<li><a class="dropdown-item menu-color" href="/mid/boardf/list?p=1&f=location&q=권선구">권선구</a></li>
-							<li><a class="dropdown-item menu-color" href="/mid/boardf/list?p=1&f=location&q=영통구">영통구</a></li>
-							<li><a class="dropdown-item menu-color" href="/mid/boardf/list?p=1&f=location&q=장안구">장안구</a></li>
-						</ul>
+				    	<button type="button" th:classappend="${menu eq 'boardf' ? 'active' : ''}" class="dropdown-toggle bg-transparent border-0 menu-color" data-bs-toggle="dropdown">						
+				        수원시 구 선택
+					    </button>
+					    <ul class="dropdown-menu" style="background-color: #ff7f50;">
+					        <li><a class="dropdown-item menu-color" href="/mid/boardf/list?p=1&f=location&q=팔달구">팔달구</a></li>
+					        <li><a class="dropdown-item menu-color" href="/mid/boardf/list?p=1&f=location&q=권선구">권선구</a></li>
+					        <li><a class="dropdown-item menu-color" href="/mid/boardf/list?p=1&f=location&q=영통구">영통구</a></li>
+					        <li><a class="dropdown-item menu-color" href="/mid/boardf/list?p=1&f=location&q=장안구">장안구</a></li>
+					    </ul>
 					</div>
 				</div>
 			</nav>

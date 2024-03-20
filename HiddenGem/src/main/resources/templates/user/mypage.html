@@ -34,6 +34,40 @@
 			justify-content: center;
 			text-align: center;
 		}
+
+		.likeList {
+			text-decoration: none;
+			color: darkviolet;
+			font-size: xx-large;
+			font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+			/* 너비 설정 */
+			width: 35%;
+			margin: auto;
+
+			text-align: center;
+			border: 2px solid coral;
+		}
+
+		.likeList:hover {
+			background-image: linear-gradient(to right,
+					#E7484F,
+					#F68B1D,
+					#FCED00,
+					#009E4F,
+					#00AAC3,
+					#732982);
+			animation: slidebg 2s linear infinite;
+			background-color: #343A40;
+			border-radius: 4px;
+			color: #fff;
+			cursor: pointer;
+			/* 너비 설정 */
+			width: 35%;
+			margin: auto;
+			text-align: center;
+			border: 0px;
+		}
 	</style>
 </head>
 
@@ -56,31 +90,23 @@
 		</div>
 	</header>
 	<!-- Content section-->
-	<section class="py-5">
-				<table class="table">
-						<tr>
-							<th style="width: 8%">ID</th>
-							<th style="width: 42%">제목</th>
-							<th style="width: 14%">글쓴이</th>
-							<th style="width: 16%">수정시간</th>
-							<th style="width: 10%">조회수</th>
-							<th style="width: 10%">좋아요</th>
-						</tr>
-						<tr th:each="boardf: ${boardLikeList}">
-							<td>[[${boardf.fid}]]</td>
-							<td>
-								<a
-									th:href="@{/boardf/detail/{x}/{y}(x=${boardf.fid},y=${boardf.uid})}">[[${boardf.title}]]</a>
-								<span th:if="${boardf.replyCount ge 1}">
-									<span class="text-danger">&#91;[[${boardf.replyCount}]]&#93;</span>
-								</span>
-							</td>
-							<td>[[${boardf.uid}]]</td>
-							<td>[[${#temporals.format(boardf.modTime, 'yy-MM-dd HH:mm')}]]</td>
-							<td>[[${boardf.viewCount}]]</td>
-							<td>[[${boardf.likeCount}]]</td>
-						</tr>
-					</table>
+	<div class="likeList">Like Hidden Gem List</div><br>
+	<div class="row">
+		<div class="col-3"></div>
+		<div class="col-6">
+			<table class="table table-borderless" style="width: 600px;">
+				<tr th:each="boardf: ${boardLikeList}">
+					<td><i class="fa-solid fa-heart" style="color: coral; margin-right: 3px;"></i>[[${boardf.likeCount}]]</td>
+					<td>
+						<a style="text-decoration: none; color: coral;"
+							th:href="@{/boardf/detail/{x}/{y}(x=${boardf.fid},y=${boardf.uid})}">[[${boardf.title}]]</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="col-3"></div>
+
+	</div>
 
 	</section>
 

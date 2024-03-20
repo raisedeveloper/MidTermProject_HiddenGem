@@ -26,4 +26,6 @@ public interface BoardFService {
 	void increaseLikeCount(int fid);
 	
 	void updateLikeCount(int fid, int count);
+	
+	List<BoardF> getBoardFListUsedMain();
 }

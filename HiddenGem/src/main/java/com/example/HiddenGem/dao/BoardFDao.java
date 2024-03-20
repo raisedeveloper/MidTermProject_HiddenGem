@@ -39,4 +39,8 @@ public interface BoardFDao {
 	
 	@Update("update boardF set likeCount=#{count} where fid=#{fid}")
 	void updateLikeCount(int fid, int count);
+	
+	@Select("SELECT * FROM boardf WHERE isDeleted =0 "
+	         + "   ORDER BY likeCount DESC")
+	   List<BoardF> getBoardFListUsedMain();
 }

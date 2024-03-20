@@ -211,4 +211,16 @@ public class BoardFController {
 		return "redirect:/boardf/detail/" + fid + "/" + uid + "?option=DNI";
 	}
 
+	  @GetMapping("/main")
+      public String main(Model model) {   
+         List<BoardF> boardfList = new ArrayList<>();
+       
+         
+         boardfList = boardFService.getBoardFListUsedMain();
+     
+         
+         model.addAttribute("boardfList", boardfList);
+
+         return "boardf/main";
+      }
 }

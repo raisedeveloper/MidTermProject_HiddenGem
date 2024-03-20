@@ -63,5 +63,10 @@ public class BoardFServiceImpl implements BoardFService {
 		
 	}
 
+	@Override
+	public List<BoardF> getBoardFListUsedMain() {
+		return boardFDao.getBoardFListUsedMain();
+	}
+
 
 }
