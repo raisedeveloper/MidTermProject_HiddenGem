@@ -1,6 +1,5 @@
 package com.example.HiddenGem.controller;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,22 +94,22 @@ public class BoardFController {
 	 */
 
 	@GetMapping("/insert")
-	   public String insertForm(Model model) {
-	      return "boardf/insert";
-	   }
+	public String insertForm(Model model) {
+		return "boardf/insert";
+	}
 
-	   @PostMapping("/insert")
-	   public String insertProc(String title, String foodCategory, String opening, String location, String tel,
-	         String info, String content, String uid, MultipartHttpServletRequest req, HttpSession session) {
+	@PostMapping("/insert")
+	public String insertProc(String title, String foodCategory, String opening, String location, String tel,
+			String info, String content, String uid, MultipartHttpServletRequest req, HttpSession session) {
 
-	      String sessUid = (String) session.getAttribute("sessUid");
-	      String foodImg = content;
-	 
-	      // boardf에 들어가야 하는 것
-	      BoardF board = new BoardF(title, foodCategory, opening, location, tel, info, sessUid, foodImg);
-	      boardFService.insertBoardF(board);
-	      return "redirect:/boardf/list";
-	   }
+		String sessUid = (String) session.getAttribute("sessUid");
+		String foodImg = content;
+
+		// boardf에 들어가야 하는 것
+		BoardF board = new BoardF(title, foodCategory, opening, location, tel, info, sessUid, foodImg);
+		boardFService.insertBoardF(board);
+		return "redirect:/boardf/list";
+	}
 
 	/*
 	 * detail
@@ -211,16 +210,16 @@ public class BoardFController {
 		return "redirect:/boardf/detail/" + fid + "/" + uid + "?option=DNI";
 	}
 
-	  @GetMapping("/main")
-      public String main(Model model) {   
-         List<BoardF> boardfList = new ArrayList<>();
-       
-         
-         boardfList = boardFService.getBoardFListUsedMain();
-     
-         
-         model.addAttribute("boardfList", boardfList);
+	@GetMapping("/main")
+	public String main(Model model, String field, String query) {
+		List<BoardF> boardfList = new ArrayList<>();
+		boardfList = boardFService.getBoardFListUsedMain();
+		field = "b.location";
+		query = "";
+		int count = (int) Math.ceil(boardFService.getBoardFCount(field, query) / 4);
+		model.addAttribute("boardfList", boardfList);
+		model.addAttribute("boardCount", count);
 
-         return "boardf/main";
-      }
+		return "boardf/main";
+	}
 }

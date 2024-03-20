@@ -309,7 +309,7 @@
 			<div th:each="reply: ${replyList}">
 				<div class="row" th:if="${reply.isMine == 0}">
 					<div class="col-9">
-						<span class="me-2">[[${reply.uname}]]</span>
+						<a class="me-2" th:href="@{/user/mypage/{x}(x=${reply.uid})}">[[${reply.uname}]]</a>
 						<span th:text="${#temporals.format(reply.regTime, 'yyyy-MM-dd HH:mm:ss')}"></span><br>
 						<span>[(${reply.comment})]</span>
 					</div>

@@ -42,40 +42,39 @@ public class UserController {
 	}
 
 	@PostMapping("/register")
-	public String registerProc(MultipartHttpServletRequest req, Model model, String uid, String pwd, String pwd2, String uname, String email, LocalDate regDate, int isDeleted, String profile,
-			int access, String sns, String link, String statusMessage) {
-		MultipartFile filePart = req.getFile("profile");
-		String fileName = null;
+	   public String registerProc(MultipartHttpServletRequest req, Model model, String uid, String pwd, String pwd2,
+	         String uname, String email, String sns, String link, String statusMessage) {
+	      MultipartFile filePart = req.getFile("profile");
+	      String fileName = null;
 
-		if (uSvc.getUserByUid(uid) != null) {
-			model.addAttribute("msg", "사용자 아이디 중복");
-			model.addAttribute("url", "/mid/user/register");
-			return "common/alertMsg";
-		}
-		if (pwd.equals(pwd2) && pwd != null) {
-			if (filePart.getContentType().contains("image")) {
-				fileName = filePart.getOriginalFilename();
-				String path = uploadDir + "profile/" + fileName;
-				System.out.println(fileName);
-				try {
-					filePart.transferTo(new File(path));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				fileName = imageUtil.squareImage(uid, fileName);
-			}
-			User user = new User(uid, pwd, uname, email, fileName);
-			uSvc.registerUser(user);
-			model.addAttribute("msg", "등록을 마쳤습니다. 로그인 하세요.");
-			model.addAttribute("url", "/mid/user/login");
-			return "common/alertMsg";
-		} else {
-			model.addAttribute("msg", "비밀번호가 동일하지 않습니다. ");
-			model.addAttribute("url", "/mid/user/register");
-			return "common/alertMsg";
-		}
-	}
-
+	      if (uSvc.getUserByUid(uid) != null) {
+	         model.addAttribute("msg", "사용자 아이디 중복");
+	         model.addAttribute("url", "/mid/user/register");
+	         return "common/alertMsg";
+	      }
+	      if (pwd.equals(pwd2) && pwd != null) {
+	         if (filePart.getContentType().contains("image")) {
+	            fileName = filePart.getOriginalFilename();
+	            String path = uploadDir + "profile/" + fileName;
+	            System.out.println(fileName);
+	            try {
+	               filePart.transferTo(new File(path));
+	            } catch (Exception e) {
+	               e.printStackTrace();
+	            }
+	            fileName = imageUtil.squareImage(uid, fileName);
+	         }
+	         User user = new User(uid, pwd, uname, email, fileName);
+	         uSvc.registerUser(user);
+	         model.addAttribute("msg", "등록을 마쳤습니다. 로그인 하세요.");
+	         model.addAttribute("url", "/mid/user/login");
+	         return "common/alertMsg";
+	      } else {
+	         model.addAttribute("msg", "비밀번호가 동일하지 않습니다. ");
+	         model.addAttribute("url", "/mid/user/register");
+	         return "common/alertMsg";
+	      }
+	   }
 	@GetMapping("/login")
 	public String loginForm() {
 		return "user/login";

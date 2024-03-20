@@ -46,7 +46,9 @@
 			margin: auto;
 
 			text-align: center;
-			border: 2px solid coral;
+			border: 2px solid;
+			animation: rainbowBorder 2s linear infinite;
+			border-radius: 80%;
 		}
 
 		.likeList:hover {
@@ -57,7 +59,10 @@
 					#009E4F,
 					#00AAC3,
 					#732982);
-			animation: slidebg 2s linear infinite;
+			background-size: 200% auto;
+			/* 배경 이미지 크기를 200%로 설정하여 움직이는 효과를 줍니다. */
+			animation: slidebg 1s linear infinite;
+			/* slidebg 애니메이션 적용 */
 			background-color: #343A40;
 			border-radius: 4px;
 			color: #fff;
@@ -66,7 +71,51 @@
 			width: 35%;
 			margin: auto;
 			text-align: center;
-			border: 0px;
+			border: 1px solid rgba(0, 0, 0, 0);
+			border-radius: 80%;
+		}
+
+		/* slidebg 애니메이션 정의 */
+		@keyframes slidebg {
+			0% {
+				background-position: 0 0;
+				/* 시작 지점 */
+			}
+
+			100% {
+				background-position: 200% 0;
+				/* 끝 지점 */
+			}
+		}
+
+		@keyframes rainbowBorder {
+			0% {
+				border-color: #E7484F;
+			}
+
+			16.67% {
+				border-color: #F68B1D;
+			}
+
+			33.33% {
+				border-color: #FCED00;
+			}
+
+			50% {
+				border-color: #009E4F;
+			}
+
+			66.67% {
+				border-color: #00AAC3;
+			}
+
+			83.33% {
+				border-color: #732982;
+			}
+
+			100% {
+				border-color: #E7484F;
+			}
 		}
 	</style>
 </head>
@@ -78,7 +127,7 @@
 		<div class="text-center my-5">
 			<img src="/mid/img/mypageBackImg.png" style="height : 500px;">
 			<div>
-				<img th:if="${user.profile}" th:src="@{/file/profile/{x}(x=${session.profile})}"
+				<img th:if="${user.profile}" th:src="@{/file/profile/{x}(x=${user.profile})}"
 					class="rounded-circle ms-3 mt-3" width="90%" style="max-width: 200px; max-height: 200px;">
 				<img th:unless="${user.profile}" src="/mid/img/person.png" class="rounded-circle ms-3 mt-3" width="90%"
 					style="max-width: 200px; max-height: 200px;">
@@ -92,11 +141,12 @@
 	<!-- Content section-->
 	<div class="likeList">Like Hidden Gem List</div><br>
 	<div class="row">
-		<div class="col-3"></div>
-		<div class="col-6">
-			<table class="table table-borderless" style="width: 600px;">
+		<div class="col-4"></div>
+		<div class="col-4">
+			<table class="table table-borderless" style="width: 400px;">
 				<tr th:each="boardf: ${boardLikeList}">
-					<td><i class="fa-solid fa-heart" style="color: coral; margin-right: 3px;"></i>[[${boardf.likeCount}]]</td>
+					<td><i class="fa-solid fa-heart"
+							style="color: coral; margin-right: 3px; margin-left: 15px;"></i>[[${boardf.likeCount}]]</td>
 					<td>
 						<a style="text-decoration: none; color: coral;"
 							th:href="@{/boardf/detail/{x}/{y}(x=${boardf.fid},y=${boardf.uid})}">[[${boardf.title}]]</a>
@@ -104,9 +154,13 @@
 				</tr>
 			</table>
 		</div>
-		<div class="col-3"></div>
+		<div class="col-4"></div>
 
 	</div>
+	<br>
+	<br>
+	<br>
+	<br>
 
 	</section>
 

@@ -52,46 +52,47 @@
     <div class="album py-5">
 
 
-     <div class="container">
-  <div class="row row-cols-1 row-cols-md-3 g-3">
-    <!-- Outer loop for rows -->
-    <div class="col" th:each="rowIdx : ${#numbers.sequence(0, boardfList.size() / 3 - 1)}">
-      <div class="row">
-        <!-- Inner loop for columns -->
-        <div class="col" th:each="colIdx : ${#numbers.sequence(rowIdx * 3, (rowIdx + 1) * 3 - 1)}">
-          <!-- Accessing the item at the current index -->
-          <div class="card shadow-sm" th:with="selectedBoardf=${boardfList[colIdx]}">
-            <a style="text-decoration: none;" th:href="@{'/boardf/detail/' + ${selectedBoardf.fid} + '/' + ${selectedBoardf.uid}}">
-              <div class="col-12 img-style" th:utext="${selectedBoardf.foodImg}"></div>
-              <div class="card-body card-style">
-                <p class="card-text"></p>
-                <div style="display: flex; justify-content: space-between;">
-                  <span class="text-body-secondary" th:text="${selectedBoardf.title}" style="font-weight: bolder; font-size: x-large;"></span>
-                  <div>
-                    <i class="fa-solid fa-heart" style="color: coral; margin-right: 3px;"></i>
-                    <span class="text-body-secondary" th:text="${selectedBoardf.likeCount}" style="font-weight: bolder; font-size: x-large;"></span>
-                  </div>
-                </div>
-                <div>
-                  <small class="text-body-secondary" th:text="${selectedBoardf.info}"></small>
-                </div>
-              </div>
-            </a>
-          </div>
+      <div class="container">
+        <div class="row row-cols-1 row-cols-md-3 g-3">
+            <!-- Outer loop for columns -->
+                <div class="col" th:each=colIdx : ${}">
+                    <!-- Inner loop for rows -->
+                    <div class="row" th:each="rowIdx : ${#numbers.sequence(0, boardCount + 1)}">
+                        <!-- Accessing the item at the current index -->
+                        <div class="card shadow-sm" th:with="selectedBoardf=${boardfList[rowIdx]}">
+                            <a style="text-decoration: none;" th:href="@{'/boardf/detail/' + ${selectedBoardf.fid} + '/' + ${selectedBoardf.uid}}">
+                                <div class="col-12 img-style" th:utext="${selectedBoardf.foodImg}"></div>
+                                <div class="card-body card-style">
+                                    <p class="card-text"></p>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span class="text-body-secondary" th:text="${selectedBoardf.title}" style="font-weight: bolder; font-size: x-large;"></span>
+                                        <div>
+                                            <i class="fa-solid fa-heart" style="color: coral; margin-right: 3px;"></i>
+                                            <span class="text-body-secondary" th:text="${selectedBoardf.likeCount}" style="font-weight: bolder; font-size: x-large;"></span>
+                                        </div>
+                                    </div>
+                                    <div style="max-height: 100px; overflow: hidden; text-overflow: ellipsis;">
+                                        <small class="text-body-secondary" th:text="${selectedBoardf.info}"></small>
+                                    </div>
+                                </div>
+                            </a>
+                          </div>
+                          <br>
+                          <br>
+                    </div>
+            </div>
         </div>
-      </div>
     </div>
+    
+
+    </div>
+
   </div>
-</div>
 
-</div>
+  </div>
 
-</div>
-
-</div>
-
-    </div>
-    <!-- 맛집목록 -->
+  </div>
+  <!-- 맛집목록 -->
 
   </div>
 
