@@ -74,6 +74,21 @@ public class BoardFController {
 		for (int i = startPage; i <= endPage; i++) {
 			pageList.add(String.valueOf(i));
 		}
+		field="location";
+		List<BoardF> boardfList = new ArrayList<>();
+		boardfList = boardFService.getBoardFListUsedMain();
+		List<BoardF> locationChange = new ArrayList<>();
+		for (BoardF board: boardfList) {
+			board.setLocation(board.getLocation().substring(8, 11)); // 구 부분만 자르기
+			board.setFoodImg(board.getFoodImg().split("\"")[3]);
+			if (board.getLocation().equals(query))
+				locationChange.add(board);
+		}
+		model.addAttribute("locationChange", locationChange);
+		
+		
+		int count = (int) Math.ceil(boardFService.getBoardFCount(field, "") / 4);
+		model.addAttribute("boardCount", count+2);
 
 		// 파라미터 넘기기- 어디갔다가 다시오면 안나올 수 있음
 
@@ -130,11 +145,19 @@ public class BoardFController {
 		if (!(jsonFiles == null || jsonFiles.equals(""))) {
 			List<String> fileList = jsonUtil.json2List(jsonFiles);
 			model.addAttribute("fileList", fileList);
-
 		}
-
+		
+//		// 사진 경로 처리
+//		List<BoardF> boardfList = new ArrayList<>();
+//		boardfList = boardFService.getBoardFListUsedMain();
+//		int count = (int) Math.ceil(boardFService.getBoardFCount("b.location", "") / 4);
+//		List<String> pickPic = new ArrayList<>(); 
+//		for (BoardF board: boardfList) {
+//			board.setFoodImg(board.getFoodImg().split("\""));
+//			pickOnePic.add(board);
+//		}
+		
 		model.addAttribute("boardf", boardf);
-
 		// 좋아요 처리
 		Like like = likeService.getLike(fid, sessUid);
 		if (like == null) {
@@ -215,10 +238,15 @@ public class BoardFController {
 		List<BoardF> boardfList = new ArrayList<>();
 		boardfList = boardFService.getBoardFListUsedMain();
 		field = "b.location";
-		query = "";
-		int count = (int) Math.ceil(boardFService.getBoardFCount(field, query) / 4);
+		int count = (int) Math.ceil(boardFService.getBoardFCount(field, "") / 4);
+		List<BoardF> pickOnePic = new ArrayList<>();
+		for (BoardF board: boardfList) {
+			board.setFoodImg(board.getFoodImg().split("\"")[3]);
+			pickOnePic.add(board);
+		}
+		model.addAttribute("locationChange", pickOnePic);
 		model.addAttribute("boardfList", boardfList);
-		model.addAttribute("boardCount", count);
+		model.addAttribute("boardCount", count+2);
 
 		return "boardf/main";
 	}
