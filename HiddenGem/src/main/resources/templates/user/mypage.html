@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<header th:replace="~{fragments/base :: head}"></header>
+	<style>
+		td {
+			text-align: center;
+		}
+	</style>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://kit.fontawesome.com/f474084c1e.js" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+		integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+	<title>Full Width Pics - Start Bootstrap Template</title>
+	<!-- Favicon-->
+	<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+	<!-- Core theme CSS (includes Bootstrap)-->
+	<link href="css/styles.css" rel="stylesheet" />
+	<style>
+		/* CSS 스타일 입히기 */
+		.bg-image-full {
+			background-size: cover;
+			background-position: center;
+			min-height: 50vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+		}
+
+		.likeList {
+			text-decoration: none;
+			color: darkviolet;
+			font-size: xx-large;
+			font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+			/* 너비 설정 */
+			width: 35%;
+			margin: auto;
+
+			text-align: center;
+			border: 2px solid;
+			animation: rainbowBorder 2s linear infinite;
+			border-radius: 80%;
+		}
+
+		.likeList:hover {
+			background-image: linear-gradient(to right,
+					#E7484F,
+					#F68B1D,
+					#FCED00,
+					#009E4F,
+					#00AAC3,
+					#732982);
+			background-size: 200% auto;
+			/* 배경 이미지 크기를 200%로 설정하여 움직이는 효과를 줍니다. */
+			animation: slidebg 1s linear infinite;
+			/* slidebg 애니메이션 적용 */
+			background-color: #343A40;
+			border-radius: 4px;
+			color: #fff;
+			cursor: pointer;
+			/* 너비 설정 */
+			width: 35%;
+			margin: auto;
+			text-align: center;
+			border: 1px solid rgba(0, 0, 0, 0);
+			border-radius: 80%;
+		}
+
+		/* slidebg 애니메이션 정의 */
+		@keyframes slidebg {
+			0% {
+				background-position: 0 0;
+				/* 시작 지점 */
+			}
+
+			100% {
+				background-position: 200% 0;
+				/* 끝 지점 */
+			}
+		}
+
+		@keyframes rainbowBorder {
+			0% {
+				border-color: #E7484F;
+			}
+
+			16.67% {
+				border-color: #F68B1D;
+			}
+
+			33.33% {
+				border-color: #FCED00;
+			}
+
+			50% {
+				border-color: #009E4F;
+			}
+
+			66.67% {
+				border-color: #00AAC3;
+			}
+
+			83.33% {
+				border-color: #732982;
+			}
+
+			100% {
+				border-color: #E7484F;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<div th:insert="~{fragments/base :: top}"></div>
+	<!-- Header - set the background image for the header in the line below-->
+	<header class="py-5 bg-image-full">
+		<div class="text-center my-5">
+			<img src="/mid/img/mypageBackImg.png" style="height : 500px;">
+			<div>
+				<img th:if="${user.profile}" th:src="@{/file/profile/{x}(x=${user.profile})}"
+					class="rounded-circle ms-3 mt-3" width="90%" style="max-width: 200px; max-height: 200px;">
+				<img th:unless="${user.profile}" src="/mid/img/person.png" class="rounded-circle ms-3 mt-3" width="90%"
+					style="max-width: 200px; max-height: 200px;">
+				<h1 class="text-black fs-3 fw-bolder">[[${user.uid}]]</h1>
+				<div th:if="${user.statusMessage}">[[${user.statusMessage}]]</div>
+				<div th:unless="${user.statusMessage}">Hidden Gem</div>
+				<a th:href="${user.link}">[[${user.sns}]]</a>
+			</div>
+		</div>
+	</header>
+	<!-- Content section-->
+	<div class="likeList">Like Hidden Gem List</div><br>
+	<div class="row">
+		<div class="col-4"></div>
+		<div class="col-4">
+			<table class="table table-borderless" style="width: 400px;">
+				<tr th:each="boardf: ${boardLikeList}">
+					<td><i class="fa-solid fa-heart"
+							style="color: coral; margin-right: 3px; margin-left: 15px;"></i>[[${boardf.likeCount}]]</td>
+					<td>
+						<a style="text-decoration: none; color: coral;"
+							th:href="@{/boardf/detail/{x}/{y}(x=${boardf.fid},y=${boardf.uid})}">[[${boardf.title}]]</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="col-4"></div>
+
+	</div>
+	<br>
+	<br>
+	<br>
+	<br>
+
+	</section>
+
+	</script>
+	<footer th:replace="~{fragments/base :: bottom}"></footer>
+
+</body>
+
+</html>

@@ -8,12 +8,23 @@
 		th {
 			text-align: center;
 		}
+
+		.card-style {
+			padding: 0 5% 5% 5%;
+		}
+
+		.card {
+			padding: 0%;
+			width: 252px;
+			margin: 15px 15px;
+
+		}
 	</style>
 	<script th:inline="javascript">
 		function search() {
 			const field = $('#field').val();
 			const query = $('#query').val();
-			const uri = '/mid/boardf/list?p=' + [[${session.currentBoardPage}]] + '&f=' + field + '&q=' + query;
+			const uri = '/mid/boardf/list?p=' + [[${ session.currentBoardPage }]] + '&f=' + field + '&q=' + query;
 			location.href = encodeURI(uri);
 		}
 	</script>
@@ -22,111 +33,95 @@
 <body>
 	<div th:insert="~{fragments/base :: top}"></div>
 
-	<div class="container" style="margin-top:120px">
+	<div class="container" style="margin-top:120px;">
 		<div class="row">
 			<div class="col-3" th:insert="~{fragments/base :: aside}"></div>
-			<div class="col-9">
+			<div class="col-9 d-flex justify-content-between">
 				<main id="main">
 
-					<table class="table table-sm table-borderless">
-						<tr>
-							<td style="width: 52%; text-align: left">
-								<h3><strong class="me-5">게시글 목록</strong>
-									<span style="font-size:16px"><a href="/mid/boardf/insert"><i
-												class="fa-solid fa-pen-to-square"></i> 글
-											쓰기</a></span>
-								</h3>
-							</td>
-							<!--이상 무 -->
-							<td style="width: 16%">
-								<span value="title" selected} class="form-control" id="field">수원시 구 검색</span>
-							</td>
-							<!--이상 무 -->
+					<h3 style="width: 52%; text-align: left"><strong class="me-5">[[${query}]] 맛집 </strong>
+						<span style="font-size:16px"><a href="/mid/boardf/insert" style="color: coral; font-size: 20px;"><i
+									class="fa-solid fa-pen-to-square"></i> 글 쓰기</a></span>
+						<br><br>
+						<div class="row" th:each="rowIdx, rowIdxStat: ${#numbers.sequence(0, boardCount * 3, 3)}">
+							<div class="d-flex flex-row">
+								<div class="col" th:each="colIdx : ${#numbers.sequence(0, 2)}"
+									th:if="${(rowIdx + colIdx) < locationChange.size() and locationChange[rowIdx + colIdx].location eq query}">
+									<div class="card shadow-sm " th:with="selectedBoardf=${locationChange[rowIdx + colIdx]}">
 
-							<td style="width: 24%">
-								<span th:unless="${query}">
-									<input class="form-control" type="text" id="query" placeholder="검색할 내용">
-								</span>
-								<!-- 이상	-->
-								<span th:if="${query}">
-									<input class="form-control" type="text" id="query" th:value="${query}">
-								</span>
-							</td>
-							<!-- 이상
-								-->
-							<td style="width: 8%">
-								<button class="btn btn-outline-primary" onclick="search()">검색</button>
-							</td>
-						</tr>
-					</table>
-					<hr>
-					<table class="table">
-						<tr>
-							<th style="width: 8%">ID</th>
-							<th style="width: 42%">제목</th>
-							<th style="width: 14%">글쓴이</th>
-							<th style="width: 16%">수정시간</th>
-							<th style="width: 10%">조회수</th>
-							<th style="width: 10%">좋아요</th>
-						</tr>
-						<tr th:each="boardf: ${boardList}">
-							<td>[[${boardf.fid}]]</td>
-							<td>
-								<a
-									th:href="@{/boardf/detail/{x}/{y}(x=${boardf.fid},y=${boardf.uid})}">[[${boardf.title}]]</a>
-								<span th:if="${boardf.replyCount ge 1}">
-									<span class="text-danger">&#91;[[${boardf.replyCount}]]&#93;</span>
-								</span>
-							</td>
-							<td>[[${boardf.uid}]]</td>
-							<td>[[${#temporals.format(boardf.modTime, 'yy-MM-dd HH:mm')}]]</td>
-							<td>[[${boardf.viewCount}]]</td>
-							<td>[[${boardf.likeCount}]]</td>
-						</tr>
-					</table>
+										<!-- Card content -->
+										<a style="text-decoration: none;"
+											th:href="@{'/boardf/detail/' + ${selectedBoardf.fid} + '/' + ${selectedBoardf.uid}}">
+											<div class="col-12 img-style" alt="이미지 설명" max-width="250px">
+												<img alt"" th:src="${selectedBoardf.foodImg}" style="width:250px; height: 250px;">
+											</div>
 
-					<!-- 이상 무 -->
-					<!-- pagination -->
-					<ul class="pagination justify-content-center mt-4">
-						<span th:if="${session.currentBoardPage gt 10}">
-							<li class="page-item"><a class="page-link"
-									th:href="@{/boardf/list(p=${startPage-1},f=${field},q=${query})}"><i
-										class="fa-solid fa-less-than"></i></a></li>
-						</span>
-						<span th:if="${session.currentBoardPage le 10}">
-							<li class="page-item"><a class="page-link" href="#"><i
-										class="fa-solid fa-less-than"></i></a></li>
-						</span>
-						<span th:each="page: ${pageList}">
-							<!--<li class="page-item" th:classappend="${session.currentBoardPage eq page ? 'active' : ''}">-->
-							<span th:switch="${page}">
-								<th:block th:case="${session.currentBoardPage}">
-									<li class="page-item active">
-										<a class="page-link" href="#">[[${page}]]</a>
-									</li>
-								</th:block>
-								<th:block th:case="*">
-									<li class="page-item">
-										<a class="page-link"
-											th:href="@{/boardf/list(p=${page},f=${field},q=${query})}">[[${page}]]</a>
-									</li>
-								</th:block>
-							</span>
-						</span>
-						<span th:if="${totalPages gt endPage}">
-							<li class="page-item"><a class="page-link"
-									th:href="@{/boardf/list(p=${endPage+1},f=${field},q=${query})}"><i
-										class="fa-solid fa-greater-than"></i></a></li>
-						</span>
-						<span th:if="${totalPages eq endPage}">
-							<li class="page-item"><a class="page-link" href="#"><i
-										class="fa-solid fa-greater-than"></i></a></li>
-						</span>
-					</ul>
-				</main>
+											<div class="card-body card-style">
+												<p class="card-text"></p>
+												<div class="d-flex justify-content-between">
+													<span class="text-body-secondary" th:text="${selectedBoardf.title}"
+														style="font-weight: bolder; font-size: x-large;"></span>
+													<div>
+														<i class="fa-solid fa-heart" style="color: coral; margin-right: 3px;"></i>
+														<span class="text-body-secondary" th:text="${selectedBoardf.likeCount}"
+															style="font-weight: bolder; font-size: x-large;"></span>
+													</div>
+												</div>
+												<div class="main_detail" style="height: 100px; overflow: hidden; text-overflow: ellipsis;">
+													<small class="text-body-secondary" th:text="${selectedBoardf.info}"
+														style="font-size: 16px;"></small>
+												</div>
+											</div>
+										</a>
+
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+
 			</div>
+
+			<!-- 이상 무 -->
+			<!-- pagination 
+			<ul class="pagination justify-content-center mt-4">
+				<span th:if="${session.currentBoardPage gt 10}">
+					<li class="page-item"><a class="page-link"
+							th:href="@{/boardf/list(p=${startPage-1},f=${field},q=${query})}"><i
+								class="fa-solid fa-less-than"></i></a></li>
+				</span>
+				<span th:if="${session.currentBoardPage le 10}">
+					<li class="page-item"><a class="page-link" href="#"><i class="fa-solid fa-less-than"></i></a></li>
+				</span>
+				<span th:each="page: ${pageList}">
+					<!--<li class="page-item" th:classappend="${session.currentBoardPage eq page ? 'active' : ''}">
+					<span th:switch="${page}">
+						<th:block th:case="${session.currentBoardPage}">
+							<li class="page-item active">
+								<a class="page-link" href="#">[[${page}]]</a>
+							</li>
+						</th:block>
+						<th:block th:case="*">
+							<li class="page-item">
+								<a class="page-link" th:href="@{/boardf/list(p=${page},f=${field},q=${query})}">[[${page}]]</a>
+							</li>
+						</th:block>
+					</span>
+				</span>
+				<span th:if="${totalPages gt endPage}">
+					<li class="page-item"><a class="page-link" th:href="@{/boardf/list(p=${endPage+1},f=${field},q=${query})}"><i
+								class="fa-solid fa-greater-than"></i></a></li>
+				</span>
+				<span th:if="${totalPages eq endPage}">
+					<li class="page-item"><a class="page-link" href="#"><i class="fa-solid fa-greater-than"></i></a></li>
+				</span>
+			</ul>-->
+			</main>
 		</div>
 	</div>
+	</div>
+	<br><br>
 
 	<footer th:replace="~{fragments/base :: bottom}"></footer>
 </body>
